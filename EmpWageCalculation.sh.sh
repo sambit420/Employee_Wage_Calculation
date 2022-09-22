@@ -2,8 +2,13 @@
 
 isPartTime=1
 isFullTime=2
+totalSalary=0
 empRatePerHr=20
-empCheck=$((RANDOM%3))
+numWokingDays=20
+
+for(( day=1; day<=numWokingDays; day++ ))
+do
+	empCheck=$((RANDOM%3));
 
 case $empCheck in
 
@@ -19,4 +24,9 @@ case $empCheck in
 esac
 
 salary=$(($empHrs*$empRatePerHr));
-echo "salary=$salar
+echo "salary=$salary"
+totalSalary=$(($totalSalary+$salary))
+
+done
+
+echo "Employee has earned rs $totalSalary in a month"
