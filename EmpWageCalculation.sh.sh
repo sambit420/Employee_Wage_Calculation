@@ -1,32 +1,36 @@
 #variables
+totalEmpHr=0
+totalWorkingDays=0
 
+#Constants
 isPartTime=1
 isFullTime=2
-totalSalary=0
-empRatePerHr=20
-numWokingDays=20
+maxHrsInMonth=10
+empRatePerHrs=20
+numWorkingDays=20
 
-for(( day=1; day<=numWokingDays; day++ ))
-do
+while [[ $totalEmpHr -lt $maxHrsInMonth && 
+         $totalWorkingDays -lt $numWorkingDays ]]
+  do
+
+	((totalWorkingDays++))
 	empCheck=$((RANDOM%3));
 
-case $empCheck in
+	case $empCheck in
+		$isPartTime)
+			empHrs=4
+			;;
+		$isFullTime)
+			empHrs=8
+			;;
+		*)
+			empHrs=0
+			;;
+	esac
 
-	$isPartTime)
-		empHrs=8
-		;;
-	$isFullTime)
-		empHrs=4
-		;;
-	*)
-		empHrs=0
-		;;
-esac
-
-salary=$(($empHrs*$empRatePerHr));
-echo "salary=$salary"
-totalSalary=$(($totalSalary+$salary))
+	totalEmpHrs=$(($totalEmpHr+$empHrs));
 
 done
 
-echo "Employee has earned rs $totalSalary in a month"
+totalSalary=$(($totalEmpHrs*$empRatePerHrs));
+echo "$totalSalary"
