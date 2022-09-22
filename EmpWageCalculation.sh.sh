@@ -9,10 +9,13 @@ maxHrsInMonth=10
 empRatePerHrs=20
 numWorkingDays=20
 
+declare -A dailyWage
+
 function getWorkingHours()
 {
 
-	case $1 in
+	local empCheck=$1
+	case $empCheck in
 
 		$isPartTime)
 			empHrs=4
@@ -29,17 +32,32 @@ function getWorkingHours()
 
 }
 
+function getEmpWage() 
+{
+
+	local empHrs=$1
+	echo $(($empHrs*$empRatePerHrs))
+}
+
 while [[ $totalEmpHr -lt $maxHrsInMonth && 
          $totalWorkingDays -lt $numWorkingDays ]]
 do
 
       ((totalWorkingDays++))
-      empHrs="$( getWorkingHours $((RANDOM%3)) )"
+      empCheck=$((RANDOM%3))
+      empHrs="$( getWorkingHours $empCheck )"
       totalWorkHrs=$(($totalEmpHr + $empHrs))
-      dailyWage[$totalWorkingDays]=$(($empHrs*$empRatePerHrs))
+      dailyWage["Day "$totalWorkingDays]="$( getEmpWage $empHrs )"
+
 done
 
 echo "$totalWorkHrs"
+
 totalSalary=$(($totalWorkHrs*$empRatePerHrs))
+
 echo "$totalSalary"
+
 echo ${dailyWage[@]}
+
+echo ${!dailyWage[@]}
+Footer
